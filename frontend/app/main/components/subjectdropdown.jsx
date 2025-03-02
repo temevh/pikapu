@@ -1,0 +1,33 @@
+import { useState } from "react";
+import { Menu, MenuItem, Button } from "@mui/material";
+
+const SubjectDropdown = () => {
+  const subjects = ["Matikka", "Historia", "Biologia"];
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [value, setValue] = useState("Valitse aine");
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (subject) => {
+    if (subject) setValue(subject);
+    setAnchorEl(null);
+  };
+
+  return (
+    <>
+      <Button onClick={handleClick}>{value}</Button>
+      <Menu anchorEl={anchorEl} open={open} onClose={() => handleClose(null)}>
+        {subjects.map((subject) => (
+          <MenuItem key={subject} onClick={() => handleClose(subject)}>
+            {subject}
+          </MenuItem>
+        ))}
+      </Menu>
+    </>
+  );
+};
+
+export default SubjectDropdown;
