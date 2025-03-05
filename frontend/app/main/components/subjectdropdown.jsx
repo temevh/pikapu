@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Menu, MenuItem, Button } from "@mui/material";
 
-const SubjectDropdown = () => {
+const SubjectDropdown = ({ selectedSubject, setSelectedSubject }) => {
   const subjects = ["Matikka", "Historia", "Biologia"];
   const [anchorEl, setAnchorEl] = useState(null);
   const [value, setValue] = useState("Valitse aine");
@@ -12,13 +12,16 @@ const SubjectDropdown = () => {
   };
 
   const handleClose = (subject) => {
-    if (subject) setValue(subject);
+    if (subject) {
+      setValue(subject);
+      setSelectedSubject(subject);
+    }
     setAnchorEl(null);
   };
 
   return (
     <>
-      <Button onClick={handleClick}>{value}</Button>
+      <Button onClick={handleClick}>{selectedSubject}</Button>
       <Menu anchorEl={anchorEl} open={open} onClose={() => handleClose(null)}>
         {subjects.map((subject) => (
           <MenuItem key={subject} onClick={() => handleClose(subject)}>
