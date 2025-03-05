@@ -1,5 +1,5 @@
 "use client";
-import { SubjectDropdown, DateCalendar } from "./components";
+import { SubjectDropdown, DateTimePicker } from "./components";
 import { useEffect, useState } from "react";
 
 const MainPage = () => {
@@ -7,8 +7,8 @@ const MainPage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   useEffect(() => {
-    console.log("selected subject", selectedSubject);
-    console.log("selected date", selectedDate);
+    console.log("selected subject:", selectedSubject);
+    console.log("selected date and time:", selectedDate);
   }, [selectedSubject, selectedDate]);
 
   return (
@@ -18,7 +18,7 @@ const MainPage = () => {
         selectedSubject={selectedSubject}
         setSelectedSubject={setSelectedSubject}
       />
-      <DateCalendar
+      <DateTimePicker
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />
