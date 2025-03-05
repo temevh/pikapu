@@ -8,7 +8,8 @@ const MainPage = () => {
 
   useEffect(() => {
     console.log("selected subject", selectedSubject);
-  }, [selectedSubject]);
+    console.log("selected date", selectedDate);
+  }, [selectedSubject, selectedDate]);
 
   return (
     <div>
@@ -17,7 +18,10 @@ const MainPage = () => {
         selectedSubject={selectedSubject}
         setSelectedSubject={setSelectedSubject}
       />
-      <DateCalendar />
+      <DateCalendar
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
+      />
     </div>
   );
 };
