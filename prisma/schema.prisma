@@ -7,7 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Substitute {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  password String
+  name     String?
+  number   String
+  subjects String
+  posts    Post[]
+}
+
+model Teacher {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name  String?
@@ -15,10 +25,13 @@ model User {
 }
 
 model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  authorId  Int
-  author    User    @relation(fields: [authorId], references: [id])
+  id           Int         @id @default(autoincrement())
+  title        String
+  content      String?
+  filled       Boolean     @default(false)
+  date         DateTime    @default(now())
+  teacher      Teacher     @relation(fields: [teacherId], references: [id])
+  Substitute   Substitute? @relation(fields: [substituteId], references: [id])
+  substituteId Int?
+  teacherId    Int
 }
