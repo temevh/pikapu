@@ -1,23 +1,19 @@
 "use client";
-import { UsernameField, PasswordField } from "../../components/fields/index";
-import {
-  GoogleButton,
-  AppleButton,
-  LogInButton,
-} from "../../components/buttons/index";
+import { EmailField, PasswordField } from "@/app/components/fields";
+import { LogInButton } from "../../components/buttons/index";
 import { useState } from "react";
 import Link from "next/link";
 
 const Fields = () => {
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
+  const [username, setEmail] = useState("");
 
   const passwordUpdated = (pass) => {
     setPassword(pass);
   };
 
-  const usernameUpdated = (name) => {
-    setUsername(name);
+  const emailUpdated = (name) => {
+    setEmail(name);
   };
 
   return (
@@ -35,7 +31,7 @@ const Fields = () => {
       <div className="flex flex-col items-center w-full">
         <div className="flex flex-col items-center w-96">
           <div className="flex flex-col justify-center gap-4 w-full mb-8">
-            <UsernameField usernameUpdated={usernameUpdated} />
+            <EmailField emailUpdated={emailUpdated} />
             <PasswordField passwordUpdated={passwordUpdated} />
           </div>
           <LogInButton />
@@ -45,10 +41,6 @@ const Fields = () => {
         <hr className="flex-grow border-gray-300" />
         <p className="text-gray-400 mx-4">Or log in with</p>
         <hr className="flex-grow border-gray-300" />
-      </div>
-      <div className="flex flex-row justify-between gap-6 mt-4">
-        <GoogleButton />
-        <AppleButton />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { Fields } from "./components";
+import Fields from "./components/fields";
 
 const loginPage = () => {
   return (
