@@ -8,8 +8,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        buttonprimary: "#3490dc", // Replace with your desired color
-        buttonsecondary: "#ff6347", // Another custom color
+        buttonprimary: "#b57cff",
+        buttonsecondary: "#ff6347",
       },
     },
   },

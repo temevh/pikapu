@@ -5,7 +5,7 @@ const PasswordField = ({ passwordUpdated }) => {
     <div>
       <input
         type="password"
-        placeholder="Password"
+        placeholder="Salasana"
         className="custom-input-field"
         onChange={(event) => passwordUpdated(event.target.value)}
       />

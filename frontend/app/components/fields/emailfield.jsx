@@ -3,8 +3,8 @@ const EmailField = ({ emailUpdated, emailValid }) => {
     <div>
       <input
         type="text"
-        placeholder="Email"
-        className={`custom-input-field ${!emailValid ? "border-red-500" : ""}`}
+        placeholder="Sähköposti"
+        className={"custom-input-field"}
         onChange={(event) => emailUpdated(event.target.value)}
       />
     </div>

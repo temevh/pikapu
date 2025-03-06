@@ -22,3 +22,22 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.custom-content-div{
+  background-color: white;
+  border-radius: 8;
+}
+
+.custom-input-field {
+  color: black;
+  border: 2px solid black;
+  border-radius: 0.5rem;
+  height: 2rem;
+  padding: 0.5rem;
+  width: 100%;
+  text-align: center;
+}
+
+.custom-button{
+  background-color: "#b57cff";
+}
