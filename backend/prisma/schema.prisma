@@ -8,12 +8,12 @@ datasource db {
 }
 
 model Substitute {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
   password String
   name     String?
   number   String
-  subjects String
+  subjects Subject[] @relation("SubstitutesOnSubjects")
   posts    Post[]
 }
 
@@ -34,4 +34,10 @@ model Post {
   Substitute   Substitute? @relation(fields: [substituteId], references: [id])
   substituteId Int?
   teacherId    Int
+}
+
+model Subject {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  substitutes Substitute[] @relation("SubstitutesOnSubjects")
 }
