@@ -12,8 +12,7 @@ const MainPage = () => {
   }, [selectedSubject, selectedDate]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <p>Main page</p>
+    <div className="flex flex-row items-center justify-center min-h-screen">
       <SubjectDropdown
         selectedSubject={selectedSubject}
         setSelectedSubject={setSelectedSubject}

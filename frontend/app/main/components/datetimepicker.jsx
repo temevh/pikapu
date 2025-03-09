@@ -1,7 +1,6 @@
 import * as React from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/fi";
-import Stack from "@mui/material/Stack";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
@@ -27,7 +26,7 @@ const DateTimePicker = ({ selectedDate, setSelectedDate }) => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"fi"}>
-      <Stack spacing={3} sx={{ width: 300 }}>
+      <div className="flex flex-row">
         <MobileDatePicker
           label="Date"
           value={dayjs(selectedDate)}
@@ -38,7 +37,7 @@ const DateTimePicker = ({ selectedDate, setSelectedDate }) => {
           value={dayjs(selectedDate)}
           onChange={handleTimeChange}
         />
-      </Stack>
+      </div>
     </LocalizationProvider>
   );
 };

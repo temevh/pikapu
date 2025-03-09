@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { Menu, MenuItem, Button } from "@mui/material";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const SubjectDropdown = ({ selectedSubject, setSelectedSubject }) => {
   const subjects = ["Matikka", "Historia", "Biologia"];
@@ -7,28 +11,26 @@ const SubjectDropdown = ({ selectedSubject, setSelectedSubject }) => {
   const [value, setValue] = useState("Valitse aine");
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = (subject) => {
-    if (subject) {
-      setValue(subject);
-      setSelectedSubject(subject);
-    }
-    setAnchorEl(null);
+  const handleChange = (event) => {
+    setValue(event.target.value);
   };
 
   return (
     <>
-      <Button onClick={handleClick}>{selectedSubject}</Button>
-      <Menu anchorEl={anchorEl} open={open} onClose={() => handleClose(null)}>
-        {subjects.map((subject) => (
-          <MenuItem key={subject} onClick={() => handleClose(subject)}>
-            {subject}
-          </MenuItem>
-        ))}
-      </Menu>
+      <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Valitse aine</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={value}
+          label="Aine"
+          onChange={handleChange}
+        >
+          {subjects.map((subject) => {
+            return <MenuItem value={subject}>{subject}</MenuItem>;
+          })}
+        </Select>
+      </FormControl>
     </>
   );
 };
