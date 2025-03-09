@@ -7,12 +7,10 @@ import Select from "@mui/material/Select";
 
 const SubjectDropdown = ({ selectedSubject, setSelectedSubject }) => {
   const subjects = ["Matikka", "Historia", "Biologia"];
-  const [anchorEl, setAnchorEl] = useState(null);
   const [value, setValue] = useState("Valitse aine");
-  const open = Boolean(anchorEl);
 
   const handleChange = (event) => {
-    setValue(event.target.value);
+    setSelectedSubject(event.target.value);
   };
 
   return (
@@ -22,7 +20,7 @@ const SubjectDropdown = ({ selectedSubject, setSelectedSubject }) => {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={value}
+          value={selectedSubject}
           label="Aine"
           onChange={handleChange}
         >
