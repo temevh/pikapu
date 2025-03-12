@@ -6,8 +6,8 @@ import { LogInButton } from "../components/buttons";
 import axios from "axios";
 
 const loginPage = () => {
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [email, setEmail] = useState("tiina@email.com");
+  const [password, setPassword] = useState("testi123");
 
   const passwordUpdated = (pass) => {
     setPassword(pass);
@@ -18,11 +18,18 @@ const loginPage = () => {
   };
 
   const logInPressed = async () => {
-    const response = await axios.post("http://localhost:5000/api/login", {
-      email: email,
-      password: password,
-    });
-    console.log(response);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        {
+          email: email,
+          password: password,
+        }
+      );
+      console.log(response);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -43,7 +50,7 @@ const loginPage = () => {
             <EmailField emailUpdated={emailUpdated} />
             <PasswordField passwordUpdated={passwordUpdated} />
           </div>
-          <LogInButton />
+          <LogInButton logInPressed={logInPressed} />
         </div>
       </div>
     </div>
