@@ -17,6 +17,14 @@ const loginPage = () => {
     setEmail(name);
   };
 
+  const logInPressed = async () => {
+    const response = await axios.post("http://localhost:5000/api/login", {
+      email: email,
+      password: password,
+    });
+    console.log(response);
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="custom-content-div flex flex-col justify-center items-center p-12">
