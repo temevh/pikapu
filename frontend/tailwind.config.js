@@ -10,6 +10,7 @@ export default {
       colors: {
         buttonprimary: "#b57cff",
         buttonsecondary: "#ff6347",
+        purpleaccent: "#6A4C9C",
       },
     },
   },
