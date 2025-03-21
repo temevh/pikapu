@@ -1,6 +1,6 @@
 const EmailField = ({ emailUpdated, emailValid }) => {
   return (
-    <div>
+    <div className="w-full">
       <input
         type="text"
         placeholder="Sähköposti"

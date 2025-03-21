@@ -29,15 +29,35 @@ body {
 }
 
 .custom-input-field {
-  color: black;
-  border: 2px solid black;
-  border-radius: 0.5rem;
-  height: 2rem;
-  padding: 0.5rem;
+  color: black; /* Text color */
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+
+  border: 2px solid black; /* Ensure black border */
+  border-radius: 4px;
+  height: 3rem;
+  padding: 0.5rem 1rem;
   width: 100%;
-  text-align: center;
+
+  background-color: #fff;
+  text-align: left;
+
+  transition: all 0.3s ease-in-out;
+}
+
+/* When the user focuses on the input */
+.custom-input-field:focus {
+  border-color: #6A4C9C; /* Keep black border */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Soft black glow effect */
+  outline: none;
+}
+
+
+/* Placeholder Styling */
+.custom-input-field::placeholder {
+  color: #888;
 }
 
 .custom-button{
-  background-color: "#b57cff";
+  background-color: "#6A4C9C";
 }
