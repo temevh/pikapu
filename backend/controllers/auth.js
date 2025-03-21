@@ -23,6 +23,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
+  console.log("user data", email, password);
 
   const user = await prisma.substitute.findUnique({ where: { email } });
   /* 
