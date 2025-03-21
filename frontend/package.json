@@ -22,7 +22,8 @@
     "next": "15.2.0",
     "postcss": "^8.5.3",
     "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
-    "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0"
+    "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-password-checklist": "^1.8.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

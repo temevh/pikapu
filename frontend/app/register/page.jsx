@@ -6,12 +6,14 @@ import {
   NameField,
   PhoneNumberField,
 } from "../components/fields";
-import { LogInButton } from "../components/buttons";
+import RegisterButton from "../components/buttons/RegisterButton";
 import axios from "axios";
+import PasswordChecklist from "react-password-checklist";
 
-const loginPage = () => {
+const registerPage = () => {
   const [email, setEmail] = useState("tiina@email.com");
-  const [password, setPassword] = useState("testi123");
+  const [password, setPassword] = useState("");
+  const [passwordAgain, setPasswordAgain] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -36,10 +38,10 @@ const loginPage = () => {
     setPhoneNumber(number);
   };
 
-  const logInPressed = async () => {
+  const registerPressed = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "http://localhost:5000/api/auth/register",
         {
           email: email,
           password: password,
@@ -66,13 +68,58 @@ const loginPage = () => {
             />
             <PhoneNumberField phoneNumberUpdated={phoneNumberUpdated} />
             <EmailField emailUpdated={emailUpdated} />
-            <PasswordField passwordUpdated={passwordUpdated} />
+            <form className="w-full">
+              <div className="flex flex-row gap-4">
+                <div>
+                  <label className="text-black">Salasana:</label>
+                  <input
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full p-2 border-2 rounded mb-4 text-black"
+                  />
+                </div>
+                <div>
+                  <label className="text-black">Salasana uudestaan:</label>
+                  <input
+                    type="password"
+                    onChange={(e) => setPasswordAgain(e.target.value)}
+                    className="w-full p-2 border-2 rounded mb-4 text-black"
+                  />
+                </div>
+              </div>
+              <PasswordChecklist
+                rules={[
+                  "minLength",
+                  "specialChar",
+                  "number",
+                  "capital",
+                  "match",
+                ]}
+                minLength={8}
+                value={password}
+                valueAgain={passwordAgain}
+                onChange={(isValid) => {}}
+                messages={{
+                  minLength: "Salasanan tulee olla vähintään 8 merkkiä pitkä.",
+                  specialChar: "Salasanassa tulee olla erikoismerkki.",
+                  number: "Salasanassa tulee olla numero.",
+                  capital: "Salasanassa tulee olla iso kirjain.",
+                  match: "Salasanat täsmäävät.",
+                }}
+                style={{
+                  color: "black",
+                  fontSize: "14px",
+                  margin: "0",
+                  padding: "0",
+                }}
+              />
+            </form>
           </div>
-          <LogInButton logInPressed={logInPressed} />
+          <RegisterButton registerPressed={registerPressed} />
         </div>
       </div>
     </div>
   );
 };
 
-export default loginPage;
+export default registerPage;
