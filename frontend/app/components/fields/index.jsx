@@ -2,14 +2,14 @@ import CheckboxField from "./checkboxfield";
 import EmailField from "./emailfield";
 import PasswordAgainField from "./passwordagainfield";
 import PasswordField from "./passwordfield";
-import FirstNameField from "./firstnamefield";
-import LastNameField from "./lastnamefield";
+import NameField from "./namefield";
+import PhoneNumberField from "./phonenumberfield";
 
 export {
   CheckboxField,
   EmailField,
   PasswordAgainField,
   PasswordField,
-  FirstNameField,
-  LastNameField,
+  NameField,
+  PhoneNumberField,
 };
