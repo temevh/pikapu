@@ -12,8 +12,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #6A4C9C; /* A darker purple for dark mode */
-    --foreground: #ededed; /* Light text color for dark mode */
+    --background: #6A4C9C;
+    --foreground: #ededed; 
   }
 }
 
@@ -29,11 +29,11 @@ body {
 }
 
 .custom-input-field {
-  color: black; /* Text color */
+  color: black;
   font-size: 1rem;
   font-family: 'Inter', sans-serif;
 
-  border: 2px solid black; /* Ensure black border */
+  border: 2px solid black;
   border-radius: 4px;
   height: 3rem;
   padding: 0.5rem 1rem;
@@ -45,15 +45,12 @@ body {
   transition: all 0.3s ease-in-out;
 }
 
-/* When the user focuses on the input */
 .custom-input-field:focus {
-  border-color: #6A4C9C; /* Keep black border */
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Soft black glow effect */
+  border-color: #6A4C9C;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   outline: none;
 }
 
-
-/* Placeholder Styling */
 .custom-input-field::placeholder {
   color: #888;
 }
