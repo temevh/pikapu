@@ -27,6 +27,7 @@ const RegisterPage = () => {
     phoneNumber &&
     password &&
     passwordAgain &&
+    schoolCode &&
     isPasswordValid;
 
   const registerPressed = async () => {

@@ -13,7 +13,14 @@ export const register = async (req, res) => {
 
   try {
     const newSub = await prisma.substitute.create({
-      data: { email, password: password },
+      data: {
+        email,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+        schoolCode: schoolCode,
+        phoneNumber: phoneNumber,
+      },
     });
 
     res.status(201).json({ message: "User registered" });

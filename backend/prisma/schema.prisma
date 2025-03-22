@@ -2,20 +2,26 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model SchoolCode {
+  id          Int          @id @default(autoincrement())
+  code        String       @unique
+  substitutes Substitute[]
+}
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model Substitute {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  password  String
-  firstName String
-  lastName  String
-  number    String
-  subjects  Subject[] @relation("SubstitutesOnSubjects")
-  posts     Post[]
+  id          Int          @id @default(autoincrement())
+  email       String       @unique
+  schoolCodes SchoolCode[]
+  firstName   String
+  lastName    String
+  phoneNumber String
+  subjects    Subject[]    @relation("SubstitutesOnSubjects")
+  posts       Post[]
 }
 
 model Teacher {
