@@ -5,6 +5,7 @@ import PasswordField from "./passwordfield";
 import NameField from "./namefield";
 import PhoneNumberField from "./phonenumberfield";
 import Passwords from "./passwords";
+import SchoolCodeField from "./schoolcodefield";
 
 export {
   CheckboxField,
@@ -14,4 +15,5 @@ export {
   NameField,
   PhoneNumberField,
   Passwords,
+  SchoolCodeField,
 };

@@ -3,16 +3,17 @@ import jwt from "jsonwebtoken";
 import prisma from "../services/prismaClient.js";
 
 export const register = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, firstName, lastName, phoneNumber, schoolCode } =
+    req.body;
 
   if (!email || !password)
     return res.status(400).json({ message: "Missing fields" });
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  //const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
-    const user = await prisma.user.create({
-      data: { email, password: hashedPassword },
+    const newSub = await prisma.substitute.create({
+      data: { email, password: password },
     });
 
     res.status(201).json({ message: "User registered" });

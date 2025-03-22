@@ -5,6 +5,7 @@ import {
   Passwords,
   NameField,
   PhoneNumberField,
+  SchoolCodeField,
 } from "../components/fields";
 import RegisterButton from "../components/buttons/RegisterButton";
 import axios from "axios";
@@ -16,6 +17,7 @@ const RegisterPage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [passwordAgain, setPasswordAgain] = useState("");
+  const [schoolCode, setSchoolCode] = useState(0);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
 
   const isFormValid =
@@ -28,7 +30,7 @@ const RegisterPage = () => {
     isPasswordValid;
 
   const registerPressed = async () => {
-    if (!isFormValid) return; // Prevent sending if the form is invalid
+    if (!isFormValid) return;
 
     try {
       const response = await axios.post(
@@ -66,6 +68,7 @@ const RegisterPage = () => {
               passwordAgainUpdated={setPasswordAgain}
               setIsPasswordValid={setIsPasswordValid}
             />
+            <SchoolCodeField schoolCodeUpdated={setSchoolCode} />
           </div>
           <RegisterButton
             registerPressed={registerPressed}
