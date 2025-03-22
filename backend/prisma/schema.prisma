@@ -16,10 +16,11 @@ datasource db {
 model Substitute {
   id          Int          @id @default(autoincrement())
   email       String       @unique
-  schoolCodes SchoolCode[]
+  password    String
   firstName   String
   lastName    String
   phoneNumber String
+  schoolCodes SchoolCode[]
   subjects    Subject[]    @relation("SubstitutesOnSubjects")
   posts       Post[]
 }

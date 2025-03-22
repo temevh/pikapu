@@ -42,11 +42,18 @@ const RegisterPage = () => {
           firstName,
           lastName,
           phoneNumber,
+          schoolCode,
         }
       );
       console.log(response);
     } catch (err) {
-      console.error(err);
+      if (err.response) {
+        console.error("Response error:", err.response.data);
+      } else if (err.request) {
+        console.error("No response received:", err.request);
+      } else {
+        console.error("Error", err.message);
+      }
     }
   };
 
