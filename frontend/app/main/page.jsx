@@ -2,6 +2,7 @@
 import { SubjectDropdown, DateTimePicker, SubDataGrid } from "./components";
 import FetchSubsButton from "./components/buttons/fetchsubsbutton";
 import CreatePostButton from "./components/buttons/createpostbutton";
+import PostsList from "./components/postslist";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -116,6 +117,8 @@ const MainPage = () => {
             <SubDataGrid substitutes={substitutes} />
           )}
         </div>
+
+        <PostsList />
       </div>
     </div>
   );

@@ -82,3 +82,21 @@ export const getPostByHash = async (req, res) => {
     res.status(500).json({ message: "Error fetching post" });
   }
 };
+
+export const getAllPosts = async (req, res) => {
+  try {
+    const posts = await prisma.post.findMany({
+      include: {
+        teacher: true,
+        Substitute: true,
+      },
+      orderBy: {
+        date: "desc",
+      },
+    });
+    res.json(posts);
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    res.status(500).json({ message: "Error fetching posts" });
+  }
+};

@@ -1,8 +1,9 @@
 import express from "express";
-import { createPost, getPostByHash } from "../controllers/post.js";
+import { createPost, getPostByHash, getAllPosts } from "../controllers/post.js";
 
 const router = express.Router();
 
+router.get("/", getAllPosts);
 router.post("/create", createPost);
 router.get("/:hash", getPostByHash);
 
