@@ -38,6 +38,7 @@ model Post {
   content      String?
   filled       Boolean     @default(false)
   date         DateTime    @default(now())
+  hash         String      @unique
   teacher      Teacher     @relation(fields: [teacherId], references: [id])
   Substitute   Substitute? @relation(fields: [substituteId], references: [id])
   substituteId Int?
