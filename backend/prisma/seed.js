@@ -5,7 +5,6 @@ async function main() {
   // Clean up existing data
   console.log("Cleaning up existing data...");
   await prisma.post.deleteMany();
-  await prisma.secondarySubstitute.deleteMany();
   await prisma.substitute.deleteMany();
   await prisma.teacher.deleteMany();
   await prisma.user.deleteMany();
@@ -146,7 +145,6 @@ async function main() {
   const posts = await Promise.all([
     prisma.post.create({
       data: {
-        title: "Matematiikan sijaisopettaja etsitään",
         subjectId: subjects[0].id, // Matematiikka
         content:
           "Tarvitsen sijaisopettajan matematiikan tunneille 8. ja 9. luokille. Tunnit ovat algebrasta ja geometriasta.",
@@ -157,7 +155,6 @@ async function main() {
     }),
     prisma.post.create({
       data: {
-        title: "Biologian sijaisopettaja etsitään",
         subjectId: subjects[2].id, // Biologia
         content:
           "Etsitään sijaisopettajaa biologian tunneille 10. luokalle. Aiheena on ekologia ja ympäristö.",
@@ -169,7 +166,6 @@ async function main() {
     }),
     prisma.post.create({
       data: {
-        title: "Fysiikan sijaisopettaja etsitään",
         subjectId: subjects[1].id, // Fysiikka
         content:
           "Tarvitsen sijaisopettajan fysiikan tunneille 7. luokalle. Tunnit käsittelevät mekaniikkaa.",
