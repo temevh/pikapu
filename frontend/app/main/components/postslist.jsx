@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Table,
@@ -9,128 +9,121 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Typography,
   Button,
+  CircularProgress,
+  Typography,
   Box,
+  Chip,
 } from "@mui/material";
-import axios from "axios";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 
 const PostsList = () => {
   const [posts, setPosts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/posts");
+        if (!response.ok) {
+          throw new Error("Failed to fetch posts");
+        }
+        const data = await response.json();
+        setPosts(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchPosts();
   }, []);
 
-  const fetchPosts = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/api/posts");
-      setPosts(response.data);
-    } catch (err) {
-      console.error("Error fetching posts:", err);
-      setError("Sijaisilmoitusten haku epäonnistui");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("fi-FI", {
+    return new Date(dateString).toLocaleDateString("fi-FI", {
       year: "numeric",
-      month: "long",
+      month: "numeric",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
     });
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
-      <Box className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      <Box display="flex" justifyContent="center" p={3}>
+        <CircularProgress />
       </Box>
     );
   }
 
   if (error) {
     return (
-      <Typography color="error" className="text-center py-4">
-        {error}
-      </Typography>
+      <Box p={3}>
+        <Typography color="error">Error: {error}</Typography>
+      </Box>
     );
   }
 
   return (
-    <div className="mt-8">
-      <Typography
-        variant="h5"
-        component="h2"
-        gutterBottom
-        className="text-gray-900"
-      >
+    <Box mt={4}>
+      <Typography variant="h5" gutterBottom>
         Sijaisilmoitukset
       </Typography>
-      <TableContainer
-        component={Paper}
-        elevation={0}
-        className="border border-gray-200"
-      >
+      <TableContainer component={Paper}>
         <Table>
           <TableHead>
-            <TableRow className="bg-gray-50">
-              <TableCell className="font-semibold">Otsikko</TableCell>
-              <TableCell className="font-semibold">Aine</TableCell>
-              <TableCell className="font-semibold">Päivämäärä</TableCell>
-              <TableCell className="font-semibold">Tila</TableCell>
-              <TableCell className="font-semibold">Toiminnot</TableCell>
+            <TableRow>
+              <TableCell>Aine</TableCell>
+              <TableCell>Opettaja</TableCell>
+              <TableCell>Päivämäärä</TableCell>
+              <TableCell>Tila</TableCell>
+              <TableCell>Toiminnot</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {posts.map((post) => (
-              <TableRow key={post.id} className="hover:bg-gray-50">
-                <TableCell>{post.title}</TableCell>
-                <TableCell>{post.subject}</TableCell>
+              <TableRow key={post.id}>
+                <TableCell>{post.subject.name}</TableCell>
+                <TableCell>
+                  {post.teacher.User[0]?.firstName}{" "}
+                  {post.teacher.User[0]?.lastName}
+                </TableCell>
                 <TableCell>{formatDate(post.date)}</TableCell>
                 <TableCell>
-                  <span
-                    className={`px-2 py-1 rounded-full text-sm ${
-                      post.filled
-                        ? "bg-green-100 text-green-800"
-                        : "bg-yellow-100 text-yellow-800"
-                    }`}
-                  >
-                    {post.filled ? "Täytetty" : "Avoin"}
-                  </span>
+                  <Chip
+                    icon={
+                      post.filled ? (
+                        <CheckCircleIcon />
+                      ) : (
+                        <RadioButtonUncheckedIcon />
+                      )
+                    }
+                    label={post.filled ? "Täytetty" : "Avoin"}
+                    color={post.filled ? "success" : "warning"}
+                    size="small"
+                  />
                 </TableCell>
                 <TableCell>
                   <Button
-                    variant="outlined"
+                    variant="contained"
+                    color="primary"
                     size="small"
-                    onClick={() => router.push(`/post/${post.hash}/view`)}
+                    onClick={() => router.push(`/post/${post.id}/view`)}
                   >
                     Tarkista
                   </Button>
                 </TableCell>
               </TableRow>
             ))}
-            {posts.length === 0 && (
-              <TableRow>
-                <TableCell
-                  colSpan={5}
-                  className="text-center py-4 text-gray-500"
-                >
-                  Ei sijaisilmoituksia
-                </TableCell>
-              </TableRow>
-            )}
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </Box>
   );
 };
 

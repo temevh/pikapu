@@ -1,4 +1,6 @@
-import prisma from "../services/prismaClient.js";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 export const createPost = async (req, res) => {
   const { title, content, subject, date, hash } = req.body;
@@ -87,8 +89,23 @@ export const getAllPosts = async (req, res) => {
   try {
     const posts = await prisma.post.findMany({
       include: {
-        teacher: true,
-        Substitute: true,
+        subject: true,
+        teacher: {
+          include: {
+            User: true,
+          },
+        },
+        primarySubstitute: {
+          include: {
+            User: true,
+          },
+        },
+        secondarySubstitutes: {
+          include: {
+            User: true,
+          },
+        },
+        User: true,
       },
       orderBy: {
         date: "desc",
@@ -97,6 +114,43 @@ export const getAllPosts = async (req, res) => {
     res.json(posts);
   } catch (error) {
     console.error("Error fetching posts:", error);
-    res.status(500).json({ message: "Error fetching posts" });
+    res.status(500).json({ error: "Error fetching posts" });
+  }
+};
+
+export const getPostById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await prisma.post.findUnique({
+      where: { id },
+      include: {
+        subject: true,
+        teacher: {
+          include: {
+            User: true,
+          },
+        },
+        primarySubstitute: {
+          include: {
+            User: true,
+          },
+        },
+        secondarySubstitutes: {
+          include: {
+            User: true,
+          },
+        },
+        User: true,
+      },
+    });
+
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    res.json(post);
+  } catch (error) {
+    console.error("Error fetching post:", error);
+    res.status(500).json({ error: "Error fetching post" });
   }
 };
