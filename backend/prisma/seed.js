@@ -1,30 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-// Function to generate a random hash
-function generateHash() {
-  return (
-    Math.random().toString(36).substring(2, 15) +
-    Math.random().toString(36).substring(2, 15)
-  );
-}
-
 async function main() {
-  // Create teachers
-  const teachers = await Promise.all([
-    prisma.teacher.create({
-      data: {
-        name: "Matti Meikäläinen",
-        email: "matti.meikalainen@example.com",
-      },
-    }),
-    prisma.teacher.create({
-      data: {
-        name: "Liisa Virtanen",
-        email: "liisa.virtanen@example.com",
-      },
-    }),
-  ]);
+  // Clean up existing data
+  console.log("Cleaning up existing data...");
+  await prisma.post.deleteMany();
+  await prisma.secondarySubstitute.deleteMany();
+  await prisma.substitute.deleteMany();
+  await prisma.teacher.deleteMany();
+  await prisma.user.deleteMany();
+  await prisma.subject.deleteMany();
+  await prisma.schoolCode.deleteMany();
+  console.log("Cleanup complete");
 
   // Create subjects first
   const subjects = await Promise.all([
@@ -57,100 +44,155 @@ async function main() {
     },
   });
 
-  // Create substitutes
-  const substitutes = await Promise.all([
-    prisma.substitute.create({
+  // Create users and their corresponding teacher/substitute records
+  const users = await Promise.all([
+    // Teacher 1
+    prisma.user.create({
+      data: {
+        email: "matti.meikalainen@example.com",
+        password: "password123",
+        firstName: "Matti",
+        lastName: "Meikäläinen",
+        phoneNumber: "0401234567",
+        teacher: {
+          create: {},
+        },
+      },
+      include: {
+        teacher: true,
+      },
+    }),
+    // Teacher 2
+    prisma.user.create({
+      data: {
+        email: "liisa.virtanen@example.com",
+        password: "password123",
+        firstName: "Liisa",
+        lastName: "Virtanen",
+        phoneNumber: "0407654321",
+        teacher: {
+          create: {},
+        },
+      },
+      include: {
+        teacher: true,
+      },
+    }),
+    // Substitute 1
+    prisma.user.create({
       data: {
         email: "pekka.korhonen@example.com",
         password: "password123",
         firstName: "Pekka",
         lastName: "Korhonen",
         phoneNumber: "0401112222",
-        schoolCodes: {
-          connect: {
-            id: schoolCode.id,
+        substitute: {
+          create: {
+            schoolCodes: {
+              connect: {
+                id: schoolCode.id,
+              },
+            },
+            subjects: {
+              connect: [
+                { id: subjects[0].id }, // Matematiikka
+                { id: subjects[1].id }, // Fysiikka
+              ],
+            },
           },
         },
-        subjects: {
-          connect: [
-            { id: subjects[0].id }, // Matematiikka
-            { id: subjects[1].id }, // Fysiikka
-          ],
-        },
+      },
+      include: {
+        substitute: true,
       },
     }),
-    prisma.substitute.create({
+    // Substitute 2
+    prisma.user.create({
       data: {
         email: "anna.jarvinen@example.com",
         password: "password123",
         firstName: "Anna",
         lastName: "Järvinen",
         phoneNumber: "0403334444",
-        schoolCodes: {
-          connect: {
-            id: schoolCode.id,
+        substitute: {
+          create: {
+            schoolCodes: {
+              connect: {
+                id: schoolCode.id,
+              },
+            },
+            subjects: {
+              connect: [
+                { id: subjects[2].id }, // Biologia
+                { id: subjects[3].id }, // Kemia
+              ],
+            },
           },
         },
-        subjects: {
-          connect: [
-            { id: subjects[2].id }, // Biologia
-            { id: subjects[3].id }, // Kemia
-          ],
-        },
+      },
+      include: {
+        substitute: true,
       },
     }),
   ]);
+
+  // Extract teachers and substitutes for post creation
+  const teachers = users.filter((u) => u.teacher).map((u) => u.teacher);
+  const substitutes = users
+    .filter((u) => u.substitute)
+    .map((u) => u.substitute);
 
   // Create posts
   const posts = await Promise.all([
     prisma.post.create({
       data: {
         title: "Matematiikan sijaisopettaja etsitään",
-        subject: "Matematiikka",
+        subjectId: subjects[0].id, // Matematiikka
         content:
           "Tarvitsen sijaisopettajan matematiikan tunneille 8. ja 9. luokille. Tunnit ovat algebrasta ja geometriasta.",
         date: new Date("2024-03-15T08:00:00Z"),
         teacherId: teachers[0].id,
         filled: false,
-        hash: generateHash(),
       },
     }),
     prisma.post.create({
       data: {
         title: "Biologian sijaisopettaja etsitään",
-        subject: "Biologia",
+        subjectId: subjects[2].id, // Biologia
         content:
           "Etsitään sijaisopettajaa biologian tunneille 10. luokalle. Aiheena on ekologia ja ympäristö.",
         date: new Date("2024-03-20T10:00:00Z"),
         teacherId: teachers[1].id,
         filled: true,
-        substituteId: substitutes[1].id,
-        hash: generateHash(),
+        primarySubstituteId: substitutes[1].id,
       },
     }),
     prisma.post.create({
       data: {
         title: "Fysiikan sijaisopettaja etsitään",
-        subject: "Fysiikka",
+        subjectId: subjects[1].id, // Fysiikka
         content:
           "Tarvitsen sijaisopettajan fysiikan tunneille 7. luokalle. Tunnit käsittelevät mekaniikkaa.",
         date: new Date("2024-03-25T12:00:00Z"),
         teacherId: teachers[0].id,
         filled: false,
-        hash: generateHash(),
+        secondarySubstitutes: {
+          connect: [{ id: substitutes[0].id }, { id: substitutes[1].id }],
+        },
       },
     }),
   ]);
 
   console.log("Seed data created successfully:");
+  console.log("- Users:", users.length);
   console.log("- Teachers:", teachers.length);
+  console.log("- Substitutes:", substitutes.length);
   console.log("- Subjects:", subjects.length);
   console.log("- School Codes:", 1);
-  console.log("- Substitutes:", substitutes.length);
   console.log("- Posts:", posts.length);
-  console.log("Post hashes:");
+  console.log("Post IDs:");
   posts.forEach((post, index) => {
-    console.log(`  Post ${index + 1}: ${post.hash}`);
+    console.log(`  Post ${index + 1}: ${post.id}`);
   });
 }
 
