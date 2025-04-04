@@ -13,39 +13,54 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id           Int         @id @default(autoincrement())
+  email        String      @unique
+  password     String
+  firstName    String
+  lastName     String
+  phoneNumber  String
+  posts        Post[]
+  teacher      Teacher?    @relation(fields: [teacherId], references: [id])
+  substitute   Substitute? @relation(fields: [substituteId], references: [id])
+  teacherId    Int?
+  substituteId Int?
+}
+
 model Substitute {
-  id          Int          @id @default(autoincrement())
-  email       String       @unique
-  password    String
-  firstName   String
-  lastName    String
-  phoneNumber String
-  schoolCodes SchoolCode[]
-  subjects    Subject[]    @relation("SubstitutesOnSubjects")
-  posts       Post[]
+  id             Int          @id @default(autoincrement())
+  schoolCodes    SchoolCode[]
+  subjects       Subject[]    @relation("SubstitutesOnSubjects")
+  posts          Post[]       @relation("PrimarySubstitute")
+  secondaryPosts Post[]       @relation("SecondarySubstitute")
+  User           User[]
 }
 
 model Teacher {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id    Int    @id @default(autoincrement())
   posts Post[]
+  User  User[]
 }
 
 model Post {
-  id           Int         @id @default(autoincrement())
-  title        String
-  content      String?
-  filled       Boolean     @default(false)
-  date         DateTime    @default(now())
-  teacher      Teacher     @relation(fields: [teacherId], references: [id])
-  Substitute   Substitute? @relation(fields: [substituteId], references: [id])
-  substituteId Int?
-  teacherId    Int
+  id                   String       @id @default(uuid())
+  subject              Subject      @relation(fields: [subjectId], references: [id])
+  subjectId            Int
+  content              String?
+  filled               Boolean      @default(false)
+  date                 DateTime     @default(now())
+  teacher              Teacher      @relation(fields: [teacherId], references: [id])
+  teacherId            Int
+  primarySubstitute    Substitute?  @relation("PrimarySubstitute", fields: [primarySubstituteId], references: [id])
+  primarySubstituteId  Int?
+  secondarySubstitutes Substitute[] @relation("SecondarySubstitute")
+  User                 User?        @relation(fields: [userId], references: [id])
+  userId               Int?
 }
 
 model Subject {
   id          Int          @id @default(autoincrement())
   name        String       @unique
   substitutes Substitute[] @relation("SubstitutesOnSubjects")
+  posts       Post[]
 }
